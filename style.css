@@ -1,0 +1,29 @@
+.searchContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px; /* Adds space between boxes */
+  margin-top: 2rem;
+}
+
+.box {
+  width: 45%;
+  height: 200px;
+  background-color: #f2f2f2;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+  border-radius: 8px; /* Added for a slightly softer look */
+  padding: 1rem;
+}
+
+/* Mobile Responsiveness for the boxes */
+@media(max-width: 500px) {
+  .searchContainer {
+    flex-direction: column; /* Stacks them vertically on mobile */
+  }
+  
+  .box {
+    width: 100%; /* Makes them take full width */
+    height: 150px; /* Slightly shorter on mobile to save screen space */
+  }
+}

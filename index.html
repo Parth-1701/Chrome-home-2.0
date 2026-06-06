@@ -396,5 +396,63 @@
     </div>
   </div>
 
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchForm = document.getElementById('search-container');
+      const searchInput = searchForm.querySelector('input[name="q"]');
+      const micButton = document.getElementById('image-button');
+      const micIcon = micButton.querySelector('i');
+
+      // Check if the browser supports the Web Speech API (Chrome, Edge, Safari)
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+      if (SpeechRecognition) {
+        const recognition = new SpeechRecognition();
+        
+        // Settings: only listen for one phrase and stop
+        recognition.continuous = false; 
+        recognition.interimResults = false; 
+
+        // When the mic button is clicked, start listening
+        micButton.addEventListener('click', () => {
+          recognition.start();
+          micIcon.style.color = '#ff4444'; // Turn icon red to show it's recording
+          searchInput.placeholder = 'Listening...';
+        });
+
+        // When the browser successfully translates the speech to text
+        recognition.onresult = (event) => {
+          const transcript = event.results[0][0].transcript;
+          
+          // Put the spoken words into the search box
+          searchInput.value = transcript;
+          
+          // Submit the search form automatically
+          searchForm.submit();
+        };
+
+        // Reset the UI when it stops listening (whether successful or not)
+        recognition.onend = () => {
+          micIcon.style.color = ''; 
+          searchInput.placeholder = 'Search anything';
+        };
+
+        // Handle errors (like if the user denies microphone permission)
+        recognition.onerror = (event) => {
+          console.error('Speech recognition error:', event.error);
+          searchInput.placeholder = 'Mic error. Try typing.';
+        };
+
+      } else {
+        // If the browser doesn't support voice search (like older Firefox)
+        micButton.addEventListener('click', () => {
+          alert("Sorry, your browser doesn't support voice search.");
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
 </body>
 </html>
